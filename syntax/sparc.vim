@@ -1,10 +1,12 @@
 " Vim syntax file for SPARC Assembler
-" Currently supported : 
-" SPARC V8, no co-processor
 "
-" This a very early version : still no co-pro mnemonics and no annulled
-" branching mnemonics (ba,a and the like).
-"
+" Version : 0.2
+" 
+" Currently supported : V8
+" 
+" Please note that there is still a little problem : I cannot get the '.' and
+" the ',a' sequences highlighted.
+" 
 " Maintainer : Nicolas Herry <k@madrognon.net>
 
 
@@ -28,38 +30,43 @@ syntax region sparcString start=/"/ skip=/\\"/ end=/"/
 syntax match sparcNumber /[0-9]\+/
 
 
-syntax keyword sparcAsmDirective section text data rodata bss align global ascii asciiz
+syntax keyword sparcMnemonic flush ldsb ldsh ldstub ldub lduh ld ldd ldsba ldsha lduba lduha lda ldda ldstuba  nop rd sethi sll srl sra stb sth st std stba stha sta stda  swap swapa unimp wr btst bset bclr btog clr clrb clrh cmp dec deccc inc inccc mov set skipz skipnz tst ldn ldna stn stna setn setnhi casn slln srln sran clrn
 
-syntax keyword sparcMnemonic ldsb ldsh ldub lduh ld ldd stb sth st std sll srl sra sethi nop
-syntax keyword sparcMnemonicLogical and andcc andn andncc or orcc orn orncc xor xorcc xnor xnorcc
-syntax keyword sparcMnemonicArithmetic add addcc addx addxcc sub subcc subx subxcc umul umulcc smul smulcc udiv udivcc sdiv sdivcc
-syntax keyword sparcMnemonicBranch ba bn bne be bg bge bl ble bleu bcc bcs bpos bneg bvc bvs fba fbn fbg fbl fbne fbe fbge fble
-syntax keyword sparcMnemonicSub save restore call jumpl
-syntax keyword sparcMnemonicFPI fmovs fnegs fabss fsqrts fsqrtd fsqrtq fadds faddd faddq fsubs fsubd fsubq fmuls fmuld fmulq fsmuld fdmulq fdivs fdivd fdivq fcmps fcmpd fcmpq
-syntax keyword sparcMnemonicCon fitos fitod fitoq fstoi fdtoi fqtoi fstod fstoq fdtos fdtoq fqtos fqtod
-syntax keyword sparcMnemonicSyn cmp jmp call tst ret set not neg inc inccc dec deccc btst bset bclr btog clr clrb clrh mov
+syntax keyword sparcMnemonicLogical  and andcc andn andcc or orcc orn orncc xnor xnorcc xor xorcc negnot 
 
+syntax keyword sparcMnemonicArithmetic add addcc addx addxcc mulscc sdiv sdivcc smul smulcc udiv udivcc umul umulcc taddcc tsubcc taddcctv tsubcctv sub subcc subx subxcc
+
+syntax keyword sparcMnemonicBranch bn bne be bg ble bge bl bgu bleu bcc bcs bpos bneg bvc bvs ba call jmpl save restore rett jmp fbn fbu fbg fbug fbl fblg fbne fbe fbue fbge fbuge fble fbule fbo fba cbn cb3 cb2 cb23 cb1 cb13 cb12 cb123 cb0 cb03 cb02 cb023 cb01 cb013 cb012 cba
+
+syntax keyword sparcMnemonicFPI fitos fitod fitoq fstoi fdtoi fstod fstoq fdtos fdtoq fqtod fqtos fmovs fnegs fabss fsqrts fsqrtd fsqrtq fadds faddd faddq fsubs fsubd fsubq fmuls fmuld fmulq fsmulq fdivs fdivd fdivq fcmps fcmpd fcmpq fcmpes fcmped fcmpeq
+
+syntax keyword sparcMnemonicTrap tn tne te tg tle tge tl tgu tleu tlu tgeu tpos tneg tvc tvs ta
+
+syntax keyword sparcMnemonicCopro cpop1 cpop2
+
+syntax keyword sparcAsmDirective alias align ascii asciz byte common double empty file global half ident local noalias nonvolatile nword optim popsection proc pushsection quad reserve section seg single size skip stabn stabs type uahalf uaword version volatile weak word xword xstabs
 
 if !exists("did_sparc_syntax_inits")
    	let did_sparc_syntax_inits=1
-	highlight link sparcComment comment
+	highlight link sparcComment Comment
 	highlight link sparcLabel Exception
-	highlight link sparcString string
-	highlight link sparcNumber number
+	highlight link sparcString String
+	highlight link sparcNumber Number
 
-	highlight link sparcAsmDirective preproc
+	highlight link sparcAsmDirective Preproc
 
 	highlight link sparcMnemonic Keyword
-	highlight link sparcMnemonicLogical operator
+	highlight link sparcMnemonicLogical Operator
 	highlight link sparcMnemonicArithmetic Statement
 	highlight link sparcMnemonicBranch Exception
-	highlight link sparcMnemonicSub keyword
-	highlight link sparcMnemonicFPI keyword
-	highlight link sparcMnemonicCon keyword
+	highlight link sparcMnemonicTrap Keyword
+	highlight link sparcMnemonicFPI Keyword
+	highlight link sparcMnemonicCopro Keyword
 	highlight link sparcMnemonicSyn Conditional
 
-	highlight link sparcRegister preproc
+	highlight link sparcRegister Preproc
 endif
 let b:current_syntax="sparc"
+
 
 
